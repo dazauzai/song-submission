@@ -38,14 +38,18 @@
                 return;
             }
 
-            var apiUrl = "https://script.google.com/macros/s/AKfycbzX_2pgd7IF8kuYfKXUZqKPISy20IuKpfvM17Y-xqitdfhIsnsak_gT0zqXB9ipOfys7w/exec?letter=" + encodeURIComponent(letter) + "&song=" + encodeURIComponent(songName);
+            var apiUrl = "https://script.google.com/macros/s/AKfycbx4Q2r5vquknXOZtDZuTgSCowtZiP1_wbvWvZSSU1ALn9K9YG7-gJthX9y9u9vtnExY5g/exec?letter=" + encodeURIComponent(letter) + "&song=" + encodeURIComponent(songName);
+
+            console.log("请求 API:", apiUrl);
 
             fetch(apiUrl)
                 .then(response => response.text())
                 .then(data => {
+                    console.log("服务器返回:", data);
                     responseText.innerHTML = "✅ " + data;
                 })
                 .catch(error => {
+                    console.error("Fetch 错误:", error);
                     responseText.innerHTML = "❌ 提交失败：" + error;
                 });
         }
