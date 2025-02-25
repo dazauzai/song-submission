@@ -30,6 +30,8 @@
     <p id="response"></p>
 
     <h2>当前提交的歌曲</h2>
+    <button onclick="loadSongs()">🔄 加载歌曲</button> <!-- 添加刷新按钮 -->
+
     <table id="songTable">
         <thead>
             <tr>
@@ -69,7 +71,7 @@
                 });
         }
 
-        // 加载已提交的歌曲
+        // 加载已提交的歌曲（并按 A-Z 排列）
         function loadSongs() {
             var apiUrl = "https://script.google.com/macros/s/AKfycbxfb32PDJHxn8WNruYX1ApaSIU33R8QAk53ihO4x_zIaND3Qi5tEXt0voVqoenwbq8bag/exec?action=getSongs";
             
@@ -80,7 +82,10 @@
                     var tableBody = document.querySelector("#songTable tbody");
                     tableBody.innerHTML = ""; // 清空旧数据
 
-                    for (var letter in data) {
+                    // 生成 A-Z 顺序的数组
+                    var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+                    
+                    alphabet.forEach(letter => {
                         var row = document.createElement("tr");
 
                         var cellLetter = document.createElement("td");
@@ -88,17 +93,16 @@
                         row.appendChild(cellLetter);
 
                         var cellSongs = document.createElement("td");
-                        cellSongs.textContent = data[letter].join(", ") || "暂无歌曲";
+                        cellSongs.textContent = data[letter] && data[letter].length > 0 ? data[letter].join(", ") : "暂无歌曲";
                         row.appendChild(cellSongs);
 
                         tableBody.appendChild(row);
-                    }
+                    });
                 })
                 .catch(error => console.error("获取歌曲失败:", error));
         }
 
-        // 页面加载时自动获取数据
-        loadSongs();
+        // 页面加载时不自动获取数据，让用户手动点击按钮加载
     </script>
 
 </body>
