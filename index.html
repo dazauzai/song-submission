@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>歌曲提交系统</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        input, button { padding: 10px; margin: 5px; }
+    </style>
+</head>
+<body>
+
+    <h2>提交你的歌曲</h2>
+    
+    <label for="letter">选择字母：</label>
+    <select id="letter">
+        <script>
+            for (let i = 65; i <= 90; i++) {
+                document.write(`<option value="${String.fromCharCode(i)}">${String.fromCharCode(i)}</option>`);
+            }
+        </script>
+    </select>
+
+    <input type="text" id="songName" placeholder="输入歌曲名">
+    <button onclick="submitSong()">提交</button>
+
+    <p id="response"></p>
+
+    <script>
+        function submitSong() {
+            var letter = document.getElementById("letter").value;
+            var songName = document.getElementById("songName").value.trim();
+            var responseText = document.getElementById("response");
+
+            if (!songName) {
+                responseText.innerHTML = "❌ 请输入歌曲名称";
+                return;
+            }
+
+            var apiUrl = "https://script.google.com/macros/s/你的API-ID/exec?letter=" + encodeURIComponent(letter) + "&song=" + encodeURIComponent(songName);
+
+            fetch(apiUrl)
+                .then(response => response.text())
+                .then(data => {
+                    responseText.innerHTML = "✅ " + data;
+                })
+                .catch(error => {
+                    responseText.innerHTML = "❌ 提交失败：" + error;
+                });
+        }
+    </script>
+
+</body>
+</html>
